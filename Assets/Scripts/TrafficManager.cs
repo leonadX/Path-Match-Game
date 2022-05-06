@@ -86,6 +86,11 @@ public class TrafficManager : MonoBehaviour
                     isGameOver = true;
                     WinPanel.SetActive(true);
                     triggerMoves = 0;
+                    int highscore = PlayerPrefs.GetInt("HighScore");
+                    
+                    if ((180 - secondsLeft) < highscore)
+                        PlayerPrefs.SetInt("HighScore", 180 - secondsLeft);
+                    
                     Debug.Log("You Win");
                 }
                 else
