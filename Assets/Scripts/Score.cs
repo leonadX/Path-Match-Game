@@ -10,7 +10,7 @@ public class Score : MonoBehaviour
 
     private void Start()
     {
-        currentScorePeg = 4;
+        currentScorePeg = 2;
     }
 
     private void Update()
