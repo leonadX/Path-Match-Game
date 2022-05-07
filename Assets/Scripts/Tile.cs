@@ -10,6 +10,12 @@ public sealed class Tile : MonoBehaviour
 	public Image icon;
 
 	private Item _item;
+	
+	[SerializeField]
+	private AudioClip failSFX;
+	
+	[SerializeField]
+	private AudioSource failAudioSource;
 
 	public Item item
     {
@@ -62,9 +68,52 @@ public sealed class Tile : MonoBehaviour
         {
 			if(neighbour == null || exclude.Contains(neighbour) || neighbour.item != item) continue;
 
+			// CheckMatchNeighbours();
+
+			// if (neighbour == null || exclude.Contains(neighbour) || neighbour.item != item)
+			// {
+			// 	// failAudioSource.PlayOneShot(failSFX);
+			// 	continue;
+			// }
+			// else
+			// {
+			// 	failAudioSource.PlayOneShot(failSFX);
+			// }
+			
 			result.AddRange(neighbour.GetConnectedTiles(exclude));
         }
 
 		return result;
     }
+
+	// Check if neighbours of selected tiles are same, if 3 or more match do nothing, if less than 3 matches, play fail sound
+	// private void CheckMatchNeighbours()
+	// {
+	// 	var connectedTiles = GetConnectedTiles();
+
+	// 	if(connectedTiles.Count < 3)
+	// 	{
+	// 		failAudioSource.PlayOneShot(failSFX);
+	// 		return;
+	// 	}
+	// 	else
+	// 	{
+	// 		return;
+	// 	}
+	// }
 }
+
+/**
+public void CheckMatchNeighbours()
+	{
+		if(Board.Instance._selection.Count < 2) return;
+
+		foreach(var neighbour in Neighbours)
+		{
+			if(neighbour == null || neighbour.item != item) continue;
+
+			failAudioSource.PlayOneShot(failSFX);
+		}
+	}
+
+*/

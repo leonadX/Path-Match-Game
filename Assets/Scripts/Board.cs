@@ -8,17 +8,16 @@ using UnityEngine;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
-
 public sealed class Board : MonoBehaviour
 {
 	public static Board Instance { get; private set; }
 
-	// Audio
+	// Audio SFX
 	[SerializeField]
 	private AudioClip popSFX;
 
 	[SerializeField]
-	private AudioSource audioSource;
+	private AudioSource popAudioSource;
 
 	[SerializeField] private Row[] rows;
 
@@ -27,10 +26,10 @@ public sealed class Board : MonoBehaviour
 	public int Width => Tiles.GetLength(0);
 	public int Height => Tiles.GetLength(1);
 
-	private readonly List<Tile> _selection = new List<Tile>();
+	public readonly List<Tile> _selection = new List<Tile>(); // was private
 
 	// Animation Duration
-	private const float TweenDuration = 0.25f;
+	private const float TweenDuration = 0.3f;
 
 	private void Awake() => Instance = this;
 
@@ -130,16 +129,21 @@ public sealed class Board : MonoBehaviour
 
 		icon1Transform.SetParent(tile2.transform);
 		icon2Transform.SetParent(tile1.transform);
+		
+		// TODO! Look at this.....
+		tile1.icon = icon2;
+		tile2.icon = icon1;
 
-		var tileItem = tile1.item; // TODO ! Correct this...
+		//var tileItem = tile1.item; // TODO ! Correct this...
+		var tile1Item = tile1.item;
 
 		//var tile1Item = tile1.Type;
 		//tile1.Type = tile2.Type;
 		//tile2.Type = tile1Item;
 
 		tile1.item = tile2.item;
-		tile2.item = tile1.item;
-	}
+		tile2.item = tile1Item;
+    }
 
 	private bool CanPop()
     {
@@ -179,7 +183,7 @@ public sealed class Board : MonoBehaviour
 				await deflateSequence.Play().AsyncWaitForCompletion();
 
 				// Play pop sound
-				audioSource.PlayOneShot(popSFX);
+				popAudioSource.PlayOneShot(popSFX);
 
 				// Give Score
 				Score.Instance.ScorePoints += tile.item.value * connectedTiles.Count;
